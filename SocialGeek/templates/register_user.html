@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container mt-5">
+    <h1 class="text-center">Be a Geek in Social Geek</h1>
+
+    {% if user.is_authenticated %}
+        <div class="alert alert-info text-center">
+            <h3>Oops, Look Like This Geek Already Exists</h3>
+        </div>
+        
+    {% else %} 
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <form method="POST" action="{% url 'register_user' %}">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-md btn-outline-success">Sign Up</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% endif %}
+</div>
+{% endblock content %}

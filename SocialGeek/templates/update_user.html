@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <h4>Update Geek in Social Geek</h4>
+<br>
+<br>
+<br>
+<br>
+    <div class="d-flex justify-content-center">
+    
+    <!-- To have  images  in the form enctype="multipart/form-data" -->
+
+        <form method="POST" action="{% url 'update_user' %}" enctype="multipart/form-data" >
+
+            {% csrf_token %}
+            <br>
+            {{ update_form.as_p }}
+            <br>
+            
+            
+            {{ profile_form.as_p }}
+            <br>
+            
+            <button type="submit" class="btn btn-md btn-outline-success">Update</button>
+            <br>
+            <br>
+            <br>
+        </form>
+    </div>
+    <div class="d-flex justify-content-center" align="right">
+              <a href={% url "update_password" %} class ="btn btn-md btn-outline-secondary">Update Password</a>
+    </div>
+    
+
+
+    {% endblock content %}
+
+
+
+
+

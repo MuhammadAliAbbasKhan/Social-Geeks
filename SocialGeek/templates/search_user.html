@@ -1,0 +1,73 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<h4>Search The Social Geeks!</h4>
+<br><br><br>
+<div class="container">
+    <div class="row">
+        <center>
+            <div class="col-8">
+                <form method="POST" action="{% url 'search_user' %}">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Search Your Gweeks Here!" class="form-control" name="searched" value="{{ search_term|default:'' }}">
+                    <br><br>
+                    <button type="submit" class="btn btn-md btn-outline-success">
+                        Search User
+                    </button>
+                </form>
+            </div>
+        </center>
+    </div>
+</div>
+
+{% if searched %}
+    {% for result in searched %}
+    <div class="alert alert-dark" role="alert">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-2">
+                    {% if result.profile.profile_image %}
+                        <img src="{{ result.profile.profile_image.url }}" width="100" height="100" class="img-fluid rounded-circle" alt="{{ result.profile.profile_image.url }}">
+                    {% else %}
+                        <img src="{% static 'images/default_pic.jpg' %}" class="img-fluid rounded-circle" alt="Profile Image">
+                    {% endif %}
+                </div>
+                <div class="col-md-10">
+                    <h5>@{{ result.username }}</h5>
+                    <p>{{ result.profile.profile_bio }}</p>
+                    <p>{{ result.gweeks.number_of_like  }} Gweeks 
+                        
+                    <div class="mb-3">
+                        {% if result.profile.home_page_link %}
+                            <a href="{{ result.profile.home_page_link }}" target="_blank" class="mx-2">
+                                <i class="fa-solid fa-link" style="color:red"></i>
+                            </a>   
+                        {% endif %}
+                        {% if result.profile.facebook_link %}
+                            <a href="{{ result.profile.facebook_link }}" target="_blank" class="mx-2">
+                                <i class="fa-brands fa-facebook-f" style="color:red"></i>
+                            </a>   
+                        {% endif %}
+                        {% if result.profile.instagram_link %}
+                            <a href="{{ result.profile.instagram_link }}" target="_blank" class="mx-2">
+                                <i class="fa-brands fa-instagram" style="color:red"></i>
+                            </a>  
+                        {% endif %}
+                        {% if result.profile.linkedin_link %}
+                            <a href="{{ result.profile.linkedin_link }}" target="_blank" class="mx-2">
+                                <i class="fa-brands fa-linkedin-in" style="color:red"></i>
+                            </a>   
+                        {% endif %}
+                    </div>
+                    
+                    <a href="{% url 'profile' result.id %}" class="btn btn-sm btn-outline-secondary mt-2">View Profile</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% endfor %}
+{% else %}
+    <p>Sorry, no user with '{{ search_term }}' exists!</p>
+{% endif %}
+{% endblock content %}

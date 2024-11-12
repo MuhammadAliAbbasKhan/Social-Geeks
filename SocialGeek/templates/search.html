@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% load static %} 
+{% block content %}
+<h4>Search The Gweeks!</h4>
+<br><br><br>
+<div class="container">
+    <div class="row">
+        <center>
+            <div class="col-8">
+                <form method="POST" action="{% url 'search' %}">
+                    {% csrf_token %}
+                    <input type="text" placeholder="Search Your Gweeks Here!" class="form-control" name="searched">
+                    <br><br>
+                    <button type="submit" class="btn btn-md btn-outline-success">
+                        Search Gweek
+                    </button>
+                </form>
+            </div>
+        </center>
+    </div>
+</div>
+
+{% if searched %}
+   
+{% for gweek in  searched %}
+
+<div class="alert alert-dark" role="alert">
+    <div class="container">
+        <div  class="row">
+            <div class="col-1">
+                {% if  gweek.user.profile.profile_image %}
+                <img src="{{gweek.user.profile.profile_image.url}}" width ="200" height="200" class="img-fluid rounded-circle" alt="{{gweek.user.profile.profile_image.url}}">
+                {% else %}
+                    <img src= "{% static "images/default_pic.jpg" %}" class="img-fluid rounded-circle" width ="200" height="200" alt="Profile Image">
+                {% endif %}
+            </div>     
+           
+            <div class="col-11">
+
+                {{gweek.body}}  </br>
+                <small class ="text-mutated">
+                    ( {{gweek.created_at}} )  By @{{gweek.user.username}}
+                    - {{gweek.number_of_like}} Likes - 
+                    {% if  user in gweek.likes.all %}
+                        <a href="{% url "gweek_like" gweek.id %}"> 
+                            <i  class="fa fa-heart" style="color:red"></i>        
+                        </a>
+                            
+                    {% else %}
+                        <a href="{% url "gweek_like" gweek.id %}"> 
+                            
+                            <i  class="fa fa-heart-o" style="color:red"></i>        
+                         </a>
+                    
+                    {% endif %}
+                    &nbsp;&nbsp;
+                    <a href="{% url "show_gweek" gweek.id %}" >
+                        
+                        <i  class="fa fa-share" style="color:gray"></i>        
+                    </a>
+                </small>
+                <br><br>
+    
+            </div>  
+        </div>  
+    </div>  
+
+</div>  
+{% endfor %}
+
+
+
+
+
+    <br>
+    <br>
+    <br>
+
+
+
+{% else %}
+    <p>Looks Like This Gweek Does not Exist!</p>
+{% endif %}
+{% endblock content %}

@@ -1,0 +1,91 @@
+{% load static %}
+
+<nav class="navbar navbar-expand-lg bg-body-tertiary">
+    <div class="container-fluid">
+    
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="{%url 'home_page'%}">Social Geeks</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url "profile_list" %}">Profiles</a>
+          </li>
+          
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Search
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="{% url "search_user" %}">Search Users</a></li>
+              <li><hr class="dropdown-divider"></li>
+              <li><a class="dropdown-item" href="{% url "search" %}">Search Gweeks</a></li>
+              <li><hr class="dropdown-divider"></li>
+            </ul>
+          </li>
+          
+          
+          {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'profile'  request.user.id %}">My Profile</a>
+              </li>
+          {% endif %} 
+        
+
+          
+          {% if user.is_authenticated %}
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'logout_user'  %}">Logout</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="{% url 'update_user'  %}">Update</a>
+              </li>
+          {% else %}
+          
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'register_user'  %}">Signup</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login_user'  %}">SignIn</a>
+          </li>
+
+          {% endif %} 
+      
+          
+        </ul>
+
+
+
+
+      {% if user.is_authenticated %}
+          <ul class ="navbar-nav ml-auto">
+              <li class="nav-link navbar-brand">
+                  <a href="{% url "profile" request.user.id %}">
+            
+                    {% if  user.profile.profile_image %}
+                        <img src="{{user.profile.profile_image.url}}" width ="40" height="40" class="img-fluid rounded-circle" alt="{{user.profile.profile_image.url}}">
+                    {% else %}
+                        <img src= "{% static "images/default_pic.jpg" %}" class="img-fluid rounded-circle" width ="40" height="40" alt="Profile Image">
+                    {% endif %}
+                
+                  </a>
+              </li>
+          </ul>
+
+
+
+      {% endif %}
+        <!--
+        <form class="d-flex" role="search">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-success" type="submit">Search</button>
+        </form>
+        -->
+
+      </div>
+    </div>
+  </nav>
